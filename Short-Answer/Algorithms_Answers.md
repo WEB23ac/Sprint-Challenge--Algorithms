@@ -21,3 +21,5 @@ take a number of eggs, eggs and number of floors n:
           f = floor
           return f
     return f
+
+This solution has a runttime complexity of O(n)
