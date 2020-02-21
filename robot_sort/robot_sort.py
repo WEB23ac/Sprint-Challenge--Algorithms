@@ -108,10 +108,8 @@ class SortingRobot:
 
             # * Starting at 0, try to move right after robot picks up 0th item, then move right and compare items, if held item is larger, swap it and move left and swap it again. This is moving the smaller item to the left on each move to the right
             while self.can_move_right():
-                # print(f'loop instance starting item is {self._item}')
                 self.swap_item()
-                print(
-                    f'robot can move right and has pickued up item {self._item}')
+
                 self.move_right()
 
                 # * now that robot is one to the right, compare held item to item at current location
@@ -130,22 +128,19 @@ class SortingRobot:
             while self.can_move_left():
                 # * pick up the last item and move left to compare
                 self.swap_item()
-                print(
-                    f'robot can move left and has pickued up item {self._item}')
+
                 self.move_left()
 
-                # * if you move left and the item in possession is smaller than the current list item, swap it and turn on light
+                # * if you move left and the item in possession is smaller than the current list item, swap it and turn on light to signal that sorting needs to continue
                 if self.compare_item() == -1:
                     self.swap_item()
                     self.set_light_on()
-                    print(f'light on = {self.light_is_on()}')
 
                 self.move_right()
                 self.swap_item()
 
                 self.move_left()
-        # * the light is turned on at some point during the loop
-            print(f'looping while light is {self.light_is_on()}')
+        # * the light is turned on at some point during the loop, after both while loops close, the light status is checked and if it's off, the sort returns
             if self.light_is_on() is False:
                 return
 
