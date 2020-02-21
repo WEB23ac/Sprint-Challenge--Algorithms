@@ -81,11 +81,13 @@ class SortingRobot:
         Turn on the robot's light
         """
         self._light = "ON"
+
     def set_light_off(self):
         """
         Turn off the robot's light
         """
         self._light = "OFF"
+
     def light_is_on(self):
         """
         Returns True if the robot's light is on and False otherwise.
@@ -97,14 +99,63 @@ class SortingRobot:
         Sort the robot's list.
         """
         # Fill this out
-        pass
+
+# * start a loop which doesn't depend on any index or value
+        while True:
+            # * use light to control loop -- light turns on when sort is complete
+            # * assume list undsorted and turn off light
+            self.set_light_off()
+
+            # * Starting at 0, try to move right after robot picks up 0th item, then move right and compare items, if held item is larger, swap it and move left and swap it again. This is moving the smaller item to the left on each move to the right
+            while self.can_move_right():
+                # print(f'loop instance starting item is {self._item}')
+                self.swap_item()
+                print(
+                    f'robot can move right and has pickued up item {self._item}')
+                self.move_right()
+
+                # * now that robot is one to the right, compare held item to item at current location
+                # ! Compare returns 1 if item held is greater than item at current location, returns -1 otherwise
+                # * if the item robot possesses is larger, swap it with current list item
+                if self.compare_item() == 1:
+                    self.swap_item()
+                # * assume item is not greater, so move back to the left and
+                # * move back left and swap current item for it, then move back to the right and run the loop again
+                self.move_left()
+                self.swap_item()
+
+                self.move_right()
+
+        # * at the end of the list, invert actions above. Here as robot move left it's comparing the items and moving the larger items to the right this happens until the robot has an item that is *less than* an item to the left.
+            while self.can_move_left():
+                # * pick up the last item and move left to compare
+                self.swap_item()
+                print(
+                    f'robot can move left and has pickued up item {self._item}')
+                self.move_left()
+
+                # * if you move left and the item in possession is smaller than the current list item, swap it and turn on light
+                if self.compare_item() == -1:
+                    self.swap_item()
+                    self.set_light_on()
+                    print(f'light on = {self.light_is_on()}')
+
+                self.move_right()
+                self.swap_item()
+
+                self.move_left()
+        # * the light is turned on at some point during the loop
+            print(f'looping while light is {self.light_is_on()}')
+            if self.light_is_on() is False:
+                return
 
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
 
-    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
+    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1,
+         45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
 
     robot = SortingRobot(l)
 
